@@ -44,6 +44,10 @@
         var dispProp = Windows.Graphics.Display.DisplayProperties;
         dispProp.addEventListener("orientationchanged", updateDisplayOrientation, false);
 
+        // add Sharing
+        var dataTransferManager = Windows.ApplicationModel.DataTransfer.DataTransferManager.getForCurrentView();
+        dataTransferManager.addEventListener("datarequested", dataRequested);
+
     };
 
     app.oncheckpoint = function (args) {
@@ -88,4 +92,14 @@ function updateDisplayOrientation() {
             // do something
             break;
     }
+}
+
+function dataRequested(e) {
+    var request = e.request;
+
+    request.data.properties.title = "Windows8JSUltimateTemplate Sharing";
+
+    request.data.properties.description = "Check out the Windows8JSUltimateTemplate!";
+
+    request.data.setText("Windows8JSUltimateTemplate is awesome!");
 }

@@ -63,8 +63,13 @@
     <Content Include="pages\search\searchResults.css" />
     <Content Include="pages\search\searchResults.html" />
     <Content Include="pages\search\searchResults.js" />
+    <Content Include="pages\settings\helpFlyout.js" />
     <Content Include="pages\settings\aboutFlyout.html" />
+    <Content Include="pages\settings\aboutFlyout.js" />
     <Content Include="pages\settings\helpFlyout.html" />
+    <Content Include="pages\share\shareTarget.css" />
+    <Content Include="pages\share\shareTarget.html" />
+    <Content Include="pages\share\shareTarget.js" />
     <None Include="Windows8JSUltimateTemplate_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
