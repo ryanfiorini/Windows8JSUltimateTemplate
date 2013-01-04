@@ -59,7 +59,10 @@
     <AppxManifest Include="package.appxmanifest">
       <SubType>Designer</SubType>
     </AppxManifest>
+    <Content Include="images\widelogo.png" />
     <Content Include="js\default.js" />
+    <Content Include="js\livetiles.js" />
+    <Content Include="js\toastnotification.js" />
     <Content Include="pages\search\searchResults.css" />
     <Content Include="pages\search\searchResults.html" />
     <Content Include="pages\search\searchResults.js" />

@@ -16,7 +16,7 @@
   <Applications>
     <Application Id="App" StartPage="default.html">
       <VisualElements DisplayName="Windows8JSUltimateTemplate" Logo="images\logo.png" SmallLogo="images\smalllogo.png" Description="Windows8JSUltimateTemplate" ForegroundText="light" BackgroundColor="#464646" ToastCapable="true">
-        <DefaultTile ShowName="allLogos" />
+        <DefaultTile ShowName="allLogos" WideLogo="images\widelogo.png" />
         <SplashScreen Image="images\splashscreen.png" />
       </VisualElements>
       <Extensions>

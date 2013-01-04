@@ -1,5 +1,11 @@
 ﻿// For an introduction to the Fixed Layout template, see the following documentation:
 // http://go.microsoft.com/fwlink/?LinkId=232508
+
+
+var applicationData = Windows.Storage.ApplicationData.current;
+var localSettings = applicationData.localSettings;
+var tileCount;
+
 (function () {
     "use strict";
 
@@ -11,6 +17,8 @@
     var ui = WinJS.UI;
     var appModel = Windows.ApplicationModel;
     var search = Windows.ApplicationModel.Search;
+    var shareOperation;
+    var dt = Windows.ApplicationModel.DataTransfer;
 
     app.onactivated = function (args) {
         if (args.detail.kind === activation.ActivationKind.launch) {
@@ -35,9 +43,13 @@
                 }
 
                 return nav.navigate(
-                        "/pages/search/searchResults.html",
-                        { queryText: args.detail.queryText });
+                    "/pages/search/searchResults.html",
+                    { queryText: args.detail.queryText });
             }));
+        }
+
+        if (args.detail.kind === appModel.Activation.ActivationKind.shareTarget) {
+            args.setPromise(WinJS.UI.processAll());
         }
 
         // add Orientation listening
@@ -48,6 +60,18 @@
         var dataTransferManager = Windows.ApplicationModel.DataTransfer.DataTransferManager.getForCurrentView();
         dataTransferManager.addEventListener("datarequested", dataRequested);
 
+        shareOperation = args.detail.shareOperation;
+
+        WinJS.Application.addEventListener("shareready", shareReady, false);
+        WinJS.Application.queueEvent({ type: "shareready" });
+    };
+
+    app.onready = function () {
+        getLocalSettings();
+
+        UpdatePrimaryTile("App Run Number: " + tileCount, "ms-appx:///images/widelogo.png", "blank wide");
+        sendToast("My test toast!", "App Run Number: " + tileCount, "ms-appx:///images/widelogo.png", "blank wide");
+        sendToast("My test toast!", "App Run Number: " + tileCount, "ms-appx:///images/widelogo.png", "blank wide", "ms-winsoundevent:Notification.IM");
     };
 
     app.oncheckpoint = function (args) {
@@ -59,6 +83,8 @@
         // args.setPromise().
 
         app.sessionState.history = nav.history;
+
+        saveLocalSettings();
     };
 
     search.SearchPane.getForCurrentView().onquerysubmitted = function (args) {
@@ -68,6 +94,13 @@
     app.start();
 })();
 
+function saveLocalSettings() {
+    localSettings.values["tileCount"] = tileCount+1;
+}
+
+function getLocalSettings() {
+    tileCount = tryParseInt(localSettings.values["tileCount"], 0);
+}
 
 function updateDisplayOrientation() {
     switch (Windows.Graphics.Display.DisplayProperties.currentOrientation) {
@@ -102,4 +135,25 @@ function dataRequested(e) {
     request.data.properties.description = "Check out the Windows8JSUltimateTemplate!";
 
     request.data.setText("Windows8JSUltimateTemplate is awesome!");
+}
+
+function shareReady(args) {
+    if (typeof(shareOperation) != "undefined" && shareOperation.data.contains(dt.StandardDataFormats.uri)) {
+        shareOperation.data.getUriAsync().done(function (uri) {
+            document.querySelector("#results").innerText =
+                "Uri: " + uri.absoluteUri;
+        });
+    }
+}
+
+function tryParseInt(str,defaultValue){
+    var retValue = defaultValue;
+
+    if(typeof str != "undefined" && str!=null){
+        if (!isNaN(str)){
+            retValue = parseInt(str);
+        }
+    }
+
+    return retValue;
 }
