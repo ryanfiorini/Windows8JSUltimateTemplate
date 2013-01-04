@@ -12,7 +12,6 @@
     toastImageElements[0].setAttribute("src", imageUri);
     toastImageElements[0].setAttribute("alt", imageAlt);
 
-
     var audio = toastXml.createElement("audio");
     var toastNode = toastXml.selectSingleNode("/toast");
     if (audio) {
